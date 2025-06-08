@@ -10,7 +10,7 @@ import Header from '@/components/Header';
 
 const KitchenDetails = () => {
   const { id } = useParams();
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState<Record<number, number>>({});
 
   // Sample kitchen data - in real app, fetch based on ID
   const kitchen = {
@@ -68,14 +68,14 @@ const KitchenDetails = () => {
 
   const categories = [...new Set(kitchen.menu.map(item => item.category))];
 
-  const addToCart = (itemId) => {
+  const addToCart = (itemId: number) => {
     setCart(prev => ({
       ...prev,
       [itemId]: (prev[itemId] || 0) + 1
     }));
   };
 
-  const removeFromCart = (itemId) => {
+  const removeFromCart = (itemId: number) => {
     setCart(prev => ({
       ...prev,
       [itemId]: Math.max((prev[itemId] || 0) - 1, 0)
@@ -103,17 +103,17 @@ const KitchenDetails = () => {
 
       {/* Kitchen Hero */}
       <div className="container mx-auto px-4">
-        <Card className="overflow-hidden mb-8">
+        <Card className="overflow-hidden mb-4 lg:mb-8">
           <div className="relative">
             <img
               src={`https://images.unsplash.com/${kitchen.image}?w=1200&h=300&fit=crop`}
               alt={kitchen.name}
-              className="w-full h-64 md:h-80 object-cover"
+              className="w-full h-48 md:h-64 lg:h-80 object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-30" />
             <div className="absolute bottom-4 left-4 text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{kitchen.name}</h1>
-              <div className="flex items-center gap-4 text-sm">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{kitchen.name}</h1>
+              <div className="flex flex-wrap items-center gap-3 lg:gap-4 text-xs lg:text-sm">
                 <div className="flex items-center">
                   <Star className="h-4 w-4 mr-1 fill-yellow-400 text-yellow-400" />
                   {kitchen.rating} ({kitchen.reviews} reviews)
@@ -130,7 +130,7 @@ const KitchenDetails = () => {
             </div>
           </div>
           
-          <CardContent className="p-6">
+          <CardContent className="p-4 lg:p-6">
             <div className="flex flex-wrap gap-2 mb-4">
               <Badge className="bg-green-500">
                 <Leaf className="h-3 w-3 mr-1" />
@@ -139,10 +139,10 @@ const KitchenDetails = () => {
               <Badge variant="outline">{kitchen.cuisine}</Badge>
               <Badge variant="outline">{kitchen.priceRange}</Badge>
             </div>
-            <p className="text-gray-600 mb-4">{kitchen.description}</p>
-            <div className="flex gap-2">
+            <p className="text-gray-600 mb-4 text-sm lg:text-base">{kitchen.description}</p>
+            <div className="flex flex-wrap gap-2">
               {kitchen.specialties.map((specialty, index) => (
-                <Badge key={index} variant="secondary">
+                <Badge key={index} variant="secondary" className="text-xs">
                   {specialty}
                 </Badge>
               ))}
@@ -153,53 +153,54 @@ const KitchenDetails = () => {
 
       {/* Menu */}
       <div className="container mx-auto px-4 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Menu Items */}
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold mb-6">Menu</h2>
+            <h2 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6">Menu</h2>
             
             {categories.map((category) => (
-              <div key={category} className="mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-orange-500">{category}</h3>
-                <div className="space-y-4">
+              <div key={category} className="mb-6 lg:mb-8">
+                <h3 className="text-lg lg:text-xl font-semibold mb-3 lg:mb-4 text-orange-500">{category}</h3>
+                <div className="space-y-3 lg:space-y-4">
                   {kitchen.menu
                     .filter(item => item.category === category)
                     .map((item) => (
                       <Card key={item.id}>
-                        <CardContent className="p-4">
-                          <div className="flex gap-4">
+                        <CardContent className="p-3 lg:p-4">
+                          <div className="flex gap-3 lg:gap-4">
                             <img
                               src={`https://images.unsplash.com/${item.image}?w=120&h=120&fit=crop`}
                               alt={item.name}
-                              className="w-20 h-20 rounded-lg object-cover"
+                              className="w-16 h-16 lg:w-20 lg:h-20 rounded-lg object-cover flex-shrink-0"
                             />
-                            <div className="flex-1">
-                              <div className="flex justify-between items-start">
-                                <div>
-                                  <h4 className="font-semibold text-lg flex items-center gap-2">
-                                    {item.name}
-                                    {item.isVeg && <Leaf className="h-4 w-4 text-green-500" />}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-start gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <h4 className="font-semibold text-base lg:text-lg flex items-center gap-2 mb-1">
+                                    <span className="truncate">{item.name}</span>
+                                    {item.isVeg && <Leaf className="h-4 w-4 text-green-500 flex-shrink-0" />}
                                   </h4>
-                                  <p className="text-gray-600 text-sm mb-2">{item.description}</p>
-                                  <p className="font-bold text-lg">₹{item.price}</p>
+                                  <p className="text-gray-600 text-xs lg:text-sm mb-2 line-clamp-2">{item.description}</p>
+                                  <p className="font-bold text-base lg:text-lg">₹{item.price}</p>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 flex-shrink-0">
                                   {cart[item.id] > 0 ? (
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-1 lg:gap-2">
                                       <Button
                                         size="sm"
                                         variant="outline"
                                         onClick={() => removeFromCart(item.id)}
+                                        className="h-8 w-8 p-0"
                                       >
                                         <Minus className="h-3 w-3" />
                                       </Button>
-                                      <span className="w-8 text-center font-medium">
+                                      <span className="w-6 lg:w-8 text-center font-medium text-sm">
                                         {cart[item.id]}
                                       </span>
                                       <Button
                                         size="sm"
                                         onClick={() => addToCart(item.id)}
-                                        className="bg-orange-500 hover:bg-orange-600"
+                                        className="bg-orange-500 hover:bg-orange-600 h-8 w-8 p-0"
                                       >
                                         <Plus className="h-3 w-3" />
                                       </Button>
@@ -208,9 +209,10 @@ const KitchenDetails = () => {
                                     <Button
                                       onClick={() => addToCart(item.id)}
                                       className="bg-orange-500 hover:bg-orange-600"
+                                      size="sm"
                                     >
-                                      <Plus className="h-4 w-4 mr-2" />
-                                      Add
+                                      <Plus className="h-4 w-4 mr-1 lg:mr-2" />
+                                      <span className="hidden sm:inline">Add</span>
                                     </Button>
                                   )}
                                 </div>
@@ -227,29 +229,29 @@ const KitchenDetails = () => {
 
           {/* Cart Summary */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <Card className="sticky top-20 lg:top-24">
+              <CardContent className="p-4 lg:p-6">
+                <h3 className="text-lg lg:text-xl font-semibold mb-4 flex items-center gap-2">
                   <ShoppingCart className="h-5 w-5" />
                   Your Order ({cartItemsCount} items)
                 </h3>
                 
                 {cartItemsCount === 0 ? (
-                  <p className="text-gray-500 text-center py-8">
+                  <p className="text-gray-500 text-center py-6 lg:py-8 text-sm lg:text-base">
                     Your cart is empty. Add items from the menu.
                   </p>
                 ) : (
                   <>
-                    <div className="space-y-3 mb-4">
+                    <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                       {kitchen.menu
                         .filter(item => cart[item.id] > 0)
                         .map((item) => (
-                          <div key={item.id} className="flex justify-between items-center">
-                            <div>
-                              <p className="font-medium">{item.name}</p>
-                              <p className="text-sm text-gray-500">₹{item.price} × {cart[item.id]}</p>
+                          <div key={item.id} className="flex justify-between items-center text-sm lg:text-base">
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium truncate">{item.name}</p>
+                              <p className="text-xs lg:text-sm text-gray-500">₹{item.price} × {cart[item.id]}</p>
                             </div>
-                            <p className="font-semibold">₹{item.price * cart[item.id]}</p>
+                            <p className="font-semibold ml-2">₹{item.price * cart[item.id]}</p>
                           </div>
                         ))}
                     </div>
@@ -257,8 +259,8 @@ const KitchenDetails = () => {
                     <Separator className="my-4" />
                     
                     <div className="flex justify-between items-center mb-4">
-                      <p className="font-semibold text-lg">Total</p>
-                      <p className="font-bold text-xl text-orange-500">₹{cartTotal}</p>
+                      <p className="font-semibold text-base lg:text-lg">Total</p>
+                      <p className="font-bold text-lg lg:text-xl text-orange-500">₹{cartTotal}</p>
                     </div>
                     
                     <Link to="/checkout">

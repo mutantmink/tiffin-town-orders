@@ -63,7 +63,8 @@ const MenuManagement = () => {
     const item = {
       id: Date.now(),
       ...newItem,
-      price: parseInt(newItem.price)
+      price: parseInt(newItem.price),
+      image: null
     };
     setMenuItems(prev => [...prev, item]);
     setNewItem({
@@ -88,26 +89,26 @@ const MenuManagement = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-4 lg:p-0">
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Menu Management</h1>
-          <p className="text-gray-600">Manage your menu items, prices, and availability</p>
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-2">Menu Management</h1>
+          <p className="text-gray-600 text-sm lg:text-base">Manage your menu items, prices, and availability</p>
         </div>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-orange-500 hover:bg-orange-600">
+            <Button className="bg-orange-500 hover:bg-orange-600 w-full lg:w-auto">
               <Plus className="h-4 w-4 mr-2" />
               Add Menu Item
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl mx-4 lg:mx-auto">
             <DialogHeader>
               <DialogTitle>Add New Menu Item</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <Label>Item Name</Label>
                   <Input
@@ -137,7 +138,7 @@ const MenuManagement = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <Label>Category</Label>
                   <Select 
@@ -183,20 +184,20 @@ const MenuManagement = () => {
       </div>
 
       {/* Menu Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
         {menuItems.map((item) => (
           <Card key={item.id} className={`${!item.isAvailable ? 'opacity-60' : ''}`}>
             <CardContent className="p-4">
               <div className="space-y-3">
                 <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{item.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{item.description}</p>
-                    <div className="flex gap-2 mb-2">
-                      <Badge variant="outline">{item.category}</Badge>
-                      {item.isVeg && <Badge className="bg-green-500">Veg</Badge>}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-base lg:text-lg truncate">{item.name}</h3>
+                    <p className="text-sm text-gray-600 mb-2 line-clamp-2">{item.description}</p>
+                    <div className="flex gap-2 mb-2 flex-wrap">
+                      <Badge variant="outline" className="text-xs">{item.category}</Badge>
+                      {item.isVeg && <Badge className="bg-green-500 text-xs">Veg</Badge>}
                     </div>
-                    <p className="text-xl font-bold text-orange-500">₹{item.price}</p>
+                    <p className="text-lg lg:text-xl font-bold text-orange-500">₹{item.price}</p>
                   </div>
                 </div>
                 
@@ -205,9 +206,8 @@ const MenuManagement = () => {
                     <Switch
                       checked={item.isAvailable}
                       onCheckedChange={() => toggleAvailability(item.id)}
-                      size="sm"
                     />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-xs lg:text-sm text-gray-600">
                       {item.isAvailable ? 'Available' : 'Unavailable'}
                     </span>
                   </div>

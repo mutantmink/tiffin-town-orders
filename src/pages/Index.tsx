@@ -70,19 +70,19 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-orange-500 to-amber-500 text-white py-16">
+      <section className="bg-gradient-to-r from-orange-500 to-amber-500 text-white py-8 lg:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4">
             Fresh Homestyle Meals
           </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">
+          <p className="text-lg md:text-xl lg:text-2xl mb-6 lg:mb-8 opacity-90">
             Discover local kitchens serving authentic, homemade food in your area
           </p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative">
-            <div className="flex bg-white rounded-full p-2 shadow-lg">
-              <div className="flex-1 flex items-center px-4">
+            <div className="flex flex-col sm:flex-row bg-white rounded-lg lg:rounded-full p-2 shadow-lg gap-2 sm:gap-0">
+              <div className="flex-1 flex items-center px-3 lg:px-4">
                 <Search className="h-5 w-5 text-gray-400 mr-3" />
                 <Input
                   placeholder="Search for kitchens, cuisines..."
@@ -91,72 +91,85 @@ const Index = () => {
                   className="border-0 text-gray-800 placeholder:text-gray-500 focus-visible:ring-0"
                 />
               </div>
-              <Button 
-                onClick={() => setShowFilters(!showFilters)}
-                variant="outline" 
-                size="sm" 
-                className="mr-2 text-gray-600 hover:text-gray-800"
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
-              </Button>
-              <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-8">
-                Search
-              </Button>
+              <div className="flex gap-2 sm:gap-0">
+                <Button 
+                  onClick={() => setShowFilters(!showFilters)}
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1 sm:flex-none sm:mr-2 text-gray-600 hover:text-gray-800"
+                >
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </Button>
+                <Button className="flex-1 sm:flex-none bg-orange-500 hover:bg-orange-600 text-white rounded-lg sm:rounded-full px-4 lg:px-8">
+                  Search
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Quick Stats */}
-      <section className="py-8 bg-white border-b">
+      <section className="py-6 lg:py-8 bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-3 gap-2 lg:gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-orange-500">150+</div>
-              <div className="text-gray-600">Local Kitchens</div>
+              <div className="text-xl lg:text-2xl font-bold text-orange-500">150+</div>
+              <div className="text-gray-600 text-xs lg:text-sm">Local Kitchens</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-orange-500">10K+</div>
-              <div className="text-gray-600">Happy Customers</div>
+              <div className="text-xl lg:text-2xl font-bold text-orange-500">10K+</div>
+              <div className="text-gray-600 text-xs lg:text-sm">Happy Customers</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-orange-500">25min</div>
-              <div className="text-gray-600">Avg Delivery</div>
+              <div className="text-xl lg:text-2xl font-bold text-orange-500">25min</div>
+              <div className="text-gray-600 text-xs lg:text-sm">Avg Delivery</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex gap-8">
+      <div className="container mx-auto px-4 py-6 lg:py-8">
+        <div className="flex gap-6 lg:gap-8">
           {/* Filters Sidebar */}
           {showFilters && (
-            <div className="w-64 hidden md:block">
+            <div className="w-64 hidden lg:block">
               <FilterSidebar filters={filters} setFilters={setFilters} />
             </div>
           )}
 
           {/* Kitchen Listings */}
           <div className="flex-1">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 lg:mb-6 gap-4">
+              <h2 className="text-xl lg:text-2xl font-bold text-gray-800">
                 Available Kitchens ({filteredKitchens.length})
               </h2>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+              <div className="flex gap-2 overflow-x-auto">
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
                   <MapPin className="h-4 w-4 mr-2" />
                   Nearby
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="whitespace-nowrap">
                   <Star className="h-4 w-4 mr-2" />
                   Top Rated
                 </Button>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Mobile Filters */}
+            {showFilters && (
+              <div className="lg:hidden mb-6">
+                <Card>
+                  <CardContent className="p-4">
+                    <FilterSidebar filters={filters} setFilters={setFilters} />
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {filteredKitchens.map((kitchen) => (
                 <KitchenCard key={kitchen.id} kitchen={kitchen} />
               ))}
@@ -165,12 +178,12 @@ const Index = () => {
             {filteredKitchens.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-gray-400 mb-4">
-                  <Search className="h-16 w-16 mx-auto" />
+                  <Search className="h-12 lg:h-16 w-12 lg:w-16 mx-auto" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                <h3 className="text-lg lg:text-xl font-semibold text-gray-600 mb-2">
                   No kitchens found
                 </h3>
-                <p className="text-gray-500">
+                <p className="text-gray-500 text-sm lg:text-base">
                   Try adjusting your search or filters
                 </p>
               </div>
@@ -180,18 +193,18 @@ const Index = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
+      <footer className="bg-gray-800 text-white py-8 lg:py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">TiffinConnect</h3>
-              <p className="text-gray-400">
+              <h3 className="text-lg lg:text-xl font-bold mb-4">TiffinConnect</h3>
+              <p className="text-gray-400 text-sm lg:text-base">
                 Connecting you with the best homestyle meals in your neighborhood.
               </p>
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Customers</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm lg:text-base">
                 <li>How it works</li>
                 <li>Delivery areas</li>
                 <li>Customer support</li>
@@ -199,7 +212,7 @@ const Index = () => {
             </div>
             <div>
               <h4 className="font-semibold mb-4">For Kitchens</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm lg:text-base">
                 <li>Partner with us</li>
                 <li>Vendor dashboard</li>
                 <li>Resources</li>
@@ -207,14 +220,14 @@ const Index = () => {
             </div>
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-400 text-sm lg:text-base">
                 <li>About us</li>
                 <li>Contact</li>
                 <li>Terms & Conditions</li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-gray-700 mt-6 lg:mt-8 pt-6 lg:pt-8 text-center text-gray-400 text-sm lg:text-base">
             <p>&copy; 2024 TiffinConnect. All rights reserved.</p>
           </div>
         </div>

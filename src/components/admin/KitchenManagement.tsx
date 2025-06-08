@@ -1,12 +1,14 @@
-
 import { useState } from 'react';
-import { Eye, CheckCircle, XCircle, Search, Filter } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, EyeOff, MapPin, Phone, Mail } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const KitchenManagement = () => {
   const [kitchens, setKitchens] = useState([
